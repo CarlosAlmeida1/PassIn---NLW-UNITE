@@ -1,6 +1,19 @@
 import fastify from 'fastify'
-import { eventRoute } from './routes/event.route'
+import { createEventRoute } from './routes/create-event'
+import {
+  validatorCompiler,
+  serializerCompiler,
+} from 'fastify-type-provider-zod'
+import { registerForEventRoute } from './routes/register-for-event'
+import { getEvent } from './routes/get-event'
+import { getAttendeeBadge } from './routes/get-attendee-badge'
 
 export const app = fastify()
 
-app.register(eventRoute, { prefix: '/events' })
+app.setValidatorCompiler(validatorCompiler)
+app.setSerializerCompiler(serializerCompiler)
+
+app.register(createEventRoute, { prefix: '/events' })
+app.register(registerForEventRoute, { prefix: '/events' })
+app.register(getEvent, { prefix: '/events' })
+app.register(getAttendeeBadge, { prefix: '/attendees' })
